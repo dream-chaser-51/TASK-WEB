@@ -42,9 +42,7 @@ var phone_error = document.getElementById('uphone_error_msg');
 var address_error = document.getElementById('uaddress_error_msg');
 var agree_error = document.getElementById('uagree_error_msg');
 
-//SET ISVALID AS DEFAULT TRUE
-var isValid = true;
-
+//Client Side Validation Start Here
 function validate()
 {
     // SELECTING ALL FORM ELEMENT
@@ -54,12 +52,15 @@ function validate()
     var userPhone=document.forms["userform"]["uphone"].value;
     var userAddress=document.forms["userform"]["uaddress"].value;
 
+    //SET ISVALID AS DEFAULT TRUE
+    var isValid = true;
+
     //Check User name value as empty or null check
     if(userName==null || userName=="")
     {
         name_error.style.color = "red";
         name_error.style.visibility="visible";
-        name_error.textContent = "User Name must not be blank";
+        name_error.textContent = "Please Enter valid Name";
         isValid =  false;
     }
     else
@@ -68,11 +69,11 @@ function validate()
     }
 
     //Check User Age value as empty or null check
-    if(userAge==null || userAge=="")
+    if(userAge==null || userAge=="" || userAge.length > 3)
     {
         age_error.style.color = "red";
         age_error.style.visibility="visible";
-        age_error.textContent = "User Age must not be blank";
+        age_error.textContent = "Please Enter valid Age";
         isValid =  false;
     }
     else
@@ -85,16 +86,23 @@ function validate()
     {
         email_error.style.color = "red";
         email_error.style.visibility="visible";
-        email_error.textContent = "User Email must not be blank";
+        email_error.textContent = "Please Enter valid Email Address";
         isValid =  false;
     }
 
     //Check User Phone value as empty or null check
-    if(userPhone==null || userPhone=="")
+    if(userPhone==null || userPhone=="" || userPhone.length != 10)
     {
+        if(userPhone.length != 10 && userPhone !="")
+        {
+            phone_error.textContent = "Phone number should be on 10 digits ";
+        }
+        else
+        {
+            phone_error.textContent = "Please Enter valid Phone Number";
+        }
         phone_error.style.color = "red";
         phone_error.style.visibility="visible";
-        phone_error.textContent = "User Phone Number must not be blank";
         isValid =  false;
     }
     else
@@ -108,7 +116,7 @@ function validate()
     {
         address_error.style.color = "red";
         address_error.style.visibility="visible";
-        address_error.textContent = "User Address must not be blank";
+        address_error.textContent = "Please Enter valid Address";
         isValid =  false;
     }
     else
@@ -117,38 +125,41 @@ function validate()
     }
 
     //Check the agree checkbox is not checked return the error
-    if(!userform.uagree.checked) 
+    if(!userform.uagree.checked)
     {
         agree_error.style.color = "red";
         agree_error.style.visibility="visible";
-        agree_error.textContent = "User must be Agree the Condition";
+        agree_error.textContent = "User must be Agree the Term Of Condition";
         isValid =  false;
     }
-
+    else
+    {
+        agree_error.style.visibility="hidden";
+    }
     return isValid;
 }
 
-
+//Validate the email format on blur
 var userEmailAddress = document.getElementById('uemail');
-userEmailAddress.addEventListener('blur', function() 
+userEmailAddress.addEventListener('blur', function()
 {
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    if (userEmailAddress.value != '') 
+    if (userEmailAddress.value != '')
     {
         if(reg.test(userEmailAddress.value) == false)
         {
             email_error.style.color = "red";
             email_error.textContent = "Invalid EMail Address";
-            isValid = false;
+            return false;
         }
         else
-        {   
-            email_error.textContent = "Valid Email";
-            
+        {
+            email_error.textContent = "";
+            return true;
         }
-        return isValid;
     }
 });
+//Client Side Validation End  Here
 
 </script>
 
